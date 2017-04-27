@@ -1,0 +1,5 @@
+﻿Idle 1 loop
+WalkDown 8 loop 0.1
+WalkRight 8 loop 0.1
+WalkUp 8 loop 0.1
+WalkLeft 8 loop 0.1
