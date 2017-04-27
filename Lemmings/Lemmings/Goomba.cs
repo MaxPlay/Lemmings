@@ -118,7 +118,7 @@ namespace Lemmings
 
             //update animations with running in mind
             animations[state].Update(gameTime, running ? 2 : 1);
-            //Console.WriteLine("{0} {1}", state, animations[state].CurrentFrame); //Debug the frames
+            //Debug.Log("{0} {1}", state, animations[state].CurrentFrame); //Debug the frames
         }
 
         #endregion Public Methods

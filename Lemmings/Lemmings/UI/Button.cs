@@ -1,6 +1,11 @@
-﻿namespace Lemmings.UI
+﻿using Lemmings.UI.Internal;
+
+namespace Lemmings.UI
 {
-    internal class Button
+    public class Button : ButtonBase
     {
+        public Button(UIManager manager, IUIElement parent) : base(manager, parent)
+        {
+        }
     }
 }

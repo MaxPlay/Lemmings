@@ -1,6 +1,6 @@
 ﻿namespace Lemmings.UI
 {
-    internal class Textbox
+    public class Textbox
     {
     }
 }

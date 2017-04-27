@@ -48,12 +48,50 @@ namespace Lemmings
             objects.Clear();
         }
 
-        internal static void Log(string text)
+        private static void PrintSave(string text)
         {
+            string output = string.Format("[{0}] {1}", DateTime.Now.ToShortTimeString(), text);
+            
+            Console.WriteLine(output);
             using (StreamWriter writer = File.AppendText("debug.log"))
             {
-                writer.WriteLine(text);
+                writer.WriteLine(output);
             }
+        }
+
+        public static void Log(object obj)
+        {
+            PrintSave(obj.ToString());
+        }
+
+        public static void Log(string text, object obj0)
+        {
+            string output = string.Format(text, obj0);
+            PrintSave(output);
+        }
+
+        public static void Log(string text, object obj0, object obj1)
+        {
+            string output = string.Format(text, obj0, obj1);
+            PrintSave(output);
+        }
+
+        public static void Log(string text, object obj0, object obj1, object obj2)
+        {
+            string output = string.Format(text, obj0, obj1, obj2);
+            PrintSave(output);
+        }
+
+        public static void Log(string text, object obj0, object obj1, object obj2, object obj3)
+        {
+            string output = string.Format(text, obj0, obj1, obj2, obj3);
+            PrintSave(output);
+        }
+
+        public static void Log(string text, params object[] args)
+        {
+            string output = string.Format(text, args);
+            PrintSave(output);
         }
     }
 }

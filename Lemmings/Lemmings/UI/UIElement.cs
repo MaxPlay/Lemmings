@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Lemmings.UI.Internal;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
@@ -30,6 +31,11 @@ namespace Lemmings.UI
         {
             children = new List<IUIElement>();
             root = manager;
+        }
+        public UIElement(UIManager manager, IUIElement parent)
+        {
+            children = new List<IUIElement>();
+            root = parent ?? manager;
         }
 
         #endregion Public Constructors

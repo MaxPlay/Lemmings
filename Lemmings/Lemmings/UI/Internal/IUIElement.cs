@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Lemmings.UI
+namespace Lemmings.UI.Internal
 {
     public interface IUIElement
     {

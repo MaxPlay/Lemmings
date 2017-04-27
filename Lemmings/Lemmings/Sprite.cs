@@ -16,7 +16,7 @@ namespace Lemmings
         protected Point frameSize;
         protected string name;
         protected float scale;
-        protected Texture2D texture;
+        protected int texture;
 
         #endregion Protected Fields
 
@@ -31,9 +31,9 @@ namespace Lemmings
         public Sprite(string name, string texture, Point frameSize)
         {
             this.name = name;
-            this.texture = Game1.ContentManager.Load<Texture2D>(texture);
+            this.texture = Assetmanager.AquireTexture(texture);
             this.frameSize = frameSize;
-            frameCount = new Point(this.texture.Width / frameSize.X, this.texture.Height / frameSize.Y);
+            frameCount = new Point(Assetmanager.GetTexture(this.texture).Width / frameSize.X, Assetmanager.GetTexture(this.texture).Height / frameSize.Y);
             frames = new List<Rectangle>();
             scale = 1;
 
@@ -100,7 +100,7 @@ namespace Lemmings
         /// <summary>
         /// The texture used to render the sprite.
         /// </summary>
-        public Texture2D Texture
+        public int Texture
         {
             get
             {
@@ -131,7 +131,7 @@ namespace Lemmings
         /// <param name="frame">the frame that should be rendered (defaults to 0)</param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position, int frame = 0)
         {
-            spriteBatch.Draw(texture, position, frames[frame], Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(Assetmanager.GetTexture(texture), position, frames[frame], Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
         }
 
         #endregion Public Methods
