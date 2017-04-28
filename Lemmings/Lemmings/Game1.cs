@@ -1,8 +1,9 @@
+using Lemmings.Localization;
 using Lemmings.Statemachine;
+using Lemmings.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Lemmings
 {
@@ -18,6 +19,8 @@ namespace Lemmings
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private StateMachine statemachine;
+
+        public static string ApplicationDirectory { get { return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location); } }
 
         #endregion Private Fields
 
@@ -50,7 +53,7 @@ namespace Lemmings
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             statemachine.Draw(spriteBatch);
             Debug.Draw(spriteBatch);
 
@@ -65,10 +68,14 @@ namespace Lemmings
         /// </summary>
         protected override void Initialize()
         {
+            Localizer.LoadLocalization();
             pixel = new Texture2D(graphics.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-            pixel.SetData<Color>(new Color[] { Color.White });
+            pixel.SetData(new Color[] { Color.White });
 
-            //statemachine = new StateMachine();
+            statemachine = new StateMachine();
+            new SplashScreen("splash", statemachine);
+            new MainMenu("mainmenu", statemachine);
+            new Gameplay("gameplay", statemachine);
 
             base.Initialize();
         }
@@ -97,9 +104,10 @@ namespace Lemmings
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+            statemachine.Update(gameTime);
+
+            if (statemachine.Exiting)
+                Exit();
             base.Update(gameTime);
         }
 

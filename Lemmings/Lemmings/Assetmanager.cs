@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Audio;
+﻿using Lemmings.Exceptions;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,16 @@ namespace Lemmings
         private static List<SoundEffect> sfx;
         private static List<Effect> shaders;
         private static List<Texture2D> textures;
+        private static bool initialized;
+
+        public static void Initialize()
+        {
+            initialized = true;
+            fonts = new Dictionary<string, SpriteFont>();
+            sfx = new List<SoundEffect>();
+            shaders = new List<Effect>();
+            textures = new List<Texture2D>();
+        }
 
         #endregion Private Fields
 
@@ -101,21 +112,47 @@ namespace Lemmings
 
         public static SpriteFont GetFont(string name)
         {
+            CheckInitialized();
+
+            if (!fonts.ContainsKey(name))
+                return null;
+
             return fonts[name];
+        }
+
+        private static void CheckInitialized()
+        {
+            if (!initialized)
+                throw new NotInitializedException(typeof(Assetmanager).Name);
         }
 
         public static SoundEffect GetSFX(int id)
         {
+            CheckInitialized();
+
+            if (id == -1)
+                return null;
+
             return sfx[id];
         }
 
         public static Effect GetShader(int id)
         {
+            CheckInitialized();
+
+            if (id == -1)
+                return null;
+
             return shaders[id];
         }
 
         public static Texture2D GetTexture(int id)
         {
+            CheckInitialized();
+
+            if (id == -1)
+                return Game1.Pixel;
+
             return textures[id];
         }
 

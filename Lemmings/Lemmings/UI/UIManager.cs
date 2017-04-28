@@ -7,6 +7,11 @@ namespace Lemmings.UI
 {
     public class UIManager : IUIElement
     {
+        public UIManager()
+        {
+            children = new List<IUIElement>();
+        }
+
         #region Private Fields
 
         private List<IUIElement> children;

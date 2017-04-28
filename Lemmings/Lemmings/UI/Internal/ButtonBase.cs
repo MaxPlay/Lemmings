@@ -17,7 +17,6 @@ namespace Lemmings.UI.Internal
         protected string text;
 
         protected Vector2 textDimension;
-
         protected Vector2 textLocation;
 
         protected int texture;
@@ -28,6 +27,11 @@ namespace Lemmings.UI.Internal
 
         public ButtonBase(UIManager manager, IUIElement parent) : base(manager, parent)
         {
+            background = Color.LightGray;
+            backgroundHover = Color.White;
+            foreground = foregroundHover = Color.Black;
+            text = string.Empty;
+            texture = -1;
         }
 
         #endregion Public Constructors
@@ -113,6 +117,9 @@ namespace Lemmings.UI.Internal
 
         protected virtual void DrawText(SpriteBatch spriteBatch)
         {
+            if (Assetmanager.GetFont(font) == null)
+                return;
+
             spriteBatch.DrawString(Assetmanager.GetFont(font), text, textLocation, hover ? foregroundHover : foreground);
         }
 
