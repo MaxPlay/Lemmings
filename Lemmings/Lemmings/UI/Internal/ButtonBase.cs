@@ -1,11 +1,20 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Lemmings.Localization;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Lemmings.UI.Internal
 {
-    public class ButtonBase : UIElement
+    public class ButtonBase : UIElement, IInteractableUI
     {
         #region Protected Fields
+
+        protected string localizationKey;
+
+        public string LocalizationKey
+        {
+            get { return localizationKey; }
+            set { localizationKey = value; Text = Localizer.GetString(localizationKey); }
+        }
 
         protected Color background;
         protected Color backgroundHover;
@@ -21,6 +30,25 @@ namespace Lemmings.UI.Internal
 
         protected int texture;
 
+        public event UIEventHandler Click;
+        public event UIEventHandler Focus;
+        public event UIEventHandler LostFocus;
+
+        protected void OnClick()
+        {
+            Click?.Invoke(this);
+        }
+
+        protected void OnFocus()
+        {
+            Focus?.Invoke(this);
+        }
+
+        protected void OnLostFocus()
+        {
+            LostFocus?.Invoke(this);
+        }
+
         #endregion Protected Fields
 
         #region Public Constructors
@@ -32,6 +60,12 @@ namespace Lemmings.UI.Internal
             foreground = foregroundHover = Color.Black;
             text = string.Empty;
             texture = -1;
+            Localizer.CultureChanged += Localizer_CultureChanged;
+        }
+
+        private void Localizer_CultureChanged(string culture)
+        {
+            Text = Localizer.GetString(localizationKey);
         }
 
         #endregion Public Constructors
@@ -98,6 +132,12 @@ namespace Lemmings.UI.Internal
         #endregion Public Properties
 
         #region Public Methods
+
+        public override void Update(GameTime gameTime)
+        {
+
+            base.Update(gameTime);
+        }
 
         public override void Draw(SpriteBatch spriteBatch)
         {

@@ -68,6 +68,7 @@ namespace Lemmings
         /// </summary>
         protected override void Initialize()
         {
+            Input.Initialize();
             Localizer.LoadLocalization();
             pixel = new Texture2D(graphics.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new Color[] { Color.White });
@@ -104,8 +105,9 @@ namespace Lemmings
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            Input.Update();
             statemachine.Update(gameTime);
-
+            
             if (statemachine.Exiting)
                 Exit();
             base.Update(gameTime);

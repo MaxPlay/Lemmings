@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using System;
 
 namespace Lemmings.Localization
 {
@@ -63,8 +64,8 @@ namespace Lemmings.Localization
                 localizations.Add(culture, ParseXMLStrings(file));
             }
 
-            if (installedCultures.ContainsKey("en-EN"))
-                currentCulture = "en-EN";
+            if (installedCultures.ContainsKey("en-US"))
+                currentCulture = "en-US";
             else if (installedCultures.Count > 0)
                 currentCulture = installedCultures.Keys.FirstOrDefault();
             else
@@ -75,7 +76,7 @@ namespace Lemmings.Localization
 
         #region Private Methods
 
-        private static string GetString(string identifier)
+        public static string GetString(string identifier)
         {
             if (!localizations.ContainsKey(currentCulture))
                 throw new LocalizationNotFoundException(currentCulture);
@@ -113,6 +114,24 @@ namespace Lemmings.Localization
 
             return strings;
         }
+
+        public static void ChangeCulture(string identifier)
+        {
+            if (installedCultures.ContainsKey(identifier))
+            {
+                currentCulture = identifier;
+                OnCultureChanged();
+            }
+        }
+
+        private static void OnCultureChanged()
+        {
+            if (CultureChanged != null)
+                CultureChanged(currentCulture);
+        }
+
+        public delegate void CultureChangedHandler(string culture);
+        public static event CultureChangedHandler CultureChanged;
 
         #endregion Private Methods
     }
