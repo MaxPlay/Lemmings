@@ -1,18 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Lemmings.Exceptions
 {
     public class LocalizationNotFoundException : Exception
     {
-        private LocalizationNotFoundException()
+        #region Public Constructors
+
+        public LocalizationNotFoundException(string culture) : base(string.Format("The localization for the given culture \"{0}\" could not be found.", culture))
         {
         }
 
-        public LocalizationNotFoundException(string culture) : base(string.Format("The localization for the given culture \"{0}\" could not be found.", culture))
+        #endregion Public Constructors
+
+        #region Protected Constructors
+
+        protected LocalizationNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+
+        #endregion Protected Constructors
+
+        #region Private Constructors
+
+        private LocalizationNotFoundException()
         {
         }
 
@@ -20,8 +31,6 @@ namespace Lemmings.Exceptions
         {
         }
 
-        protected LocalizationNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+        #endregion Private Constructors
     }
 }

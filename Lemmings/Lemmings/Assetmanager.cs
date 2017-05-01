@@ -11,19 +11,10 @@ namespace Lemmings
         #region Private Fields
 
         private static Dictionary<string, SpriteFont> fonts;
+        private static bool initialized;
         private static List<SoundEffect> sfx;
         private static List<Effect> shaders;
         private static List<Texture2D> textures;
-        private static bool initialized;
-
-        public static void Initialize()
-        {
-            initialized = true;
-            fonts = new Dictionary<string, SpriteFont>();
-            sfx = new List<SoundEffect>();
-            shaders = new List<Effect>();
-            textures = new List<Texture2D>();
-        }
 
         #endregion Private Fields
 
@@ -112,18 +103,15 @@ namespace Lemmings
 
         public static SpriteFont GetFont(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                return null;
+
             CheckInitialized();
 
             if (!fonts.ContainsKey(name))
                 return null;
 
             return fonts[name];
-        }
-
-        private static void CheckInitialized()
-        {
-            if (!initialized)
-                throw new NotInitializedException(typeof(Assetmanager).Name);
         }
 
         public static SoundEffect GetSFX(int id)
@@ -156,6 +144,25 @@ namespace Lemmings
             return textures[id];
         }
 
+        public static void Initialize()
+        {
+            initialized = true;
+            fonts = new Dictionary<string, SpriteFont>();
+            sfx = new List<SoundEffect>();
+            shaders = new List<Effect>();
+            textures = new List<Texture2D>();
+        }
+
         #endregion Public Methods
+
+        #region Private Methods
+
+        private static void CheckInitialized()
+        {
+            if (!initialized)
+                throw new NotInitializedException(typeof(Assetmanager).Name);
+        }
+
+        #endregion Private Methods
     }
 }

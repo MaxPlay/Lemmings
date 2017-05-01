@@ -31,11 +31,18 @@ namespace Lemmings.UI
         {
             children = new List<IUIElement>();
             root = manager;
+            parent = manager;
+
+            parent.AddChild(this);
         }
+
         public UIElement(UIManager manager, IUIElement parent)
         {
             children = new List<IUIElement>();
-            root = parent ?? manager;
+            this.parent = parent ?? manager;
+            root = manager;
+
+            parent.AddChild(this);
         }
 
         #endregion Public Constructors

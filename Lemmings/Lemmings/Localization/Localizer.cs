@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using System;
 
 namespace Lemmings.Localization
 {
@@ -21,6 +20,18 @@ namespace Lemmings.Localization
         private static Dictionary<string, Dictionary<string, string>> localizations;
 
         #endregion Private Fields
+
+        #region Public Delegates
+
+        public delegate void CultureChangedHandler(string culture);
+
+        #endregion Public Delegates
+
+        #region Public Events
+
+        public static event CultureChangedHandler CultureChanged;
+
+        #endregion Public Events
 
         #region Public Properties
 
@@ -47,6 +58,26 @@ namespace Lemmings.Localization
         #endregion Public Properties
 
         #region Public Methods
+
+        public static void ChangeCulture(string identifier)
+        {
+            if (installedCultures.ContainsKey(identifier))
+            {
+                currentCulture = identifier;
+                OnCultureChanged();
+            }
+        }
+
+        public static string GetString(string identifier)
+        {
+            if (!localizations.ContainsKey(currentCulture))
+                throw new LocalizationNotFoundException(currentCulture);
+
+            if (!localizations[currentCulture].ContainsKey(identifier))
+                return fallback;
+
+            return localizations[currentCulture][identifier];
+        }
 
         public static void LoadLocalization()
         {
@@ -76,15 +107,10 @@ namespace Lemmings.Localization
 
         #region Private Methods
 
-        public static string GetString(string identifier)
+        private static void OnCultureChanged()
         {
-            if (!localizations.ContainsKey(currentCulture))
-                throw new LocalizationNotFoundException(currentCulture);
-
-            if (!localizations[currentCulture].ContainsKey(identifier))
-                return fallback;
-
-            return localizations[currentCulture][identifier];
+            if (CultureChanged != null)
+                CultureChanged(currentCulture);
         }
 
         private static Dictionary<string, string> ParseXMLStrings(string file)
@@ -114,24 +140,6 @@ namespace Lemmings.Localization
 
             return strings;
         }
-
-        public static void ChangeCulture(string identifier)
-        {
-            if (installedCultures.ContainsKey(identifier))
-            {
-                currentCulture = identifier;
-                OnCultureChanged();
-            }
-        }
-
-        private static void OnCultureChanged()
-        {
-            if (CultureChanged != null)
-                CultureChanged(currentCulture);
-        }
-
-        public delegate void CultureChangedHandler(string culture);
-        public static event CultureChangedHandler CultureChanged;
 
         #endregion Private Methods
     }

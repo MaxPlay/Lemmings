@@ -20,8 +20,6 @@ namespace Lemmings
         private SpriteBatch spriteBatch;
         private StateMachine statemachine;
 
-        public static string ApplicationDirectory { get { return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location); } }
-
         #endregion Private Fields
 
         #region Public Constructors
@@ -37,10 +35,13 @@ namespace Lemmings
 
         #region Public Properties
 
+        public static string ApplicationDirectory { get { return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location); } }
+
         public static ContentManager ContentManager
         {
             get { return contentManager; }
         }
+
         public static Texture2D Pixel { get { return pixel; } }
 
         #endregion Public Properties
@@ -68,15 +69,23 @@ namespace Lemmings
         /// </summary>
         protected override void Initialize()
         {
-            Input.Initialize();
-            Localizer.LoadLocalization();
             pixel = new Texture2D(graphics.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new Color[] { Color.White });
+
+            Input.Initialize();
+            Input.ChangedCursorVisiblity += Input_ChangedCursorVisiblity;
+            Assetmanager.Initialize();
+            Assetmanager.AquireFont("Fonts/default");
+            Localizer.LoadLocalization();
+            Settings.Instance.Load();
 
             statemachine = new StateMachine();
             new SplashScreen("splash", statemachine);
             new MainMenu("mainmenu", statemachine);
             new Gameplay("gameplay", statemachine);
+
+            statemachine.SetCurrentState("mainmenu");
+            statemachine.Start();
 
             base.Initialize();
         }
@@ -107,12 +116,21 @@ namespace Lemmings
         {
             Input.Update();
             statemachine.Update(gameTime);
-            
+
             if (statemachine.Exiting)
                 Exit();
             base.Update(gameTime);
         }
 
         #endregion Protected Methods
+
+        #region Private Methods
+
+        private void Input_ChangedCursorVisiblity(bool newValue)
+        {
+            IsMouseVisible = newValue;
+        }
+
+        #endregion Private Methods
     }
 }

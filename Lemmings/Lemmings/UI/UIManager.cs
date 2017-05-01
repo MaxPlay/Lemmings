@@ -7,16 +7,20 @@ namespace Lemmings.UI
 {
     public class UIManager : IUIElement
     {
-        public UIManager()
-        {
-            children = new List<IUIElement>();
-        }
-
         #region Private Fields
 
         private List<IUIElement> children;
 
         #endregion Private Fields
+
+        #region Public Constructors
+
+        public UIManager()
+        {
+            children = new List<IUIElement>();
+        }
+
+        #endregion Public Constructors
 
         #region Public Properties
 
@@ -146,10 +150,12 @@ namespace Lemmings.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
             foreach (IUIElement child in children)
             {
                 child.Draw(spriteBatch);
             }
+            spriteBatch.End();
         }
 
         public void RemoveChild(IUIElement child)

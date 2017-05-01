@@ -3,38 +3,27 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Lemmings
 {
     public static class Debug
     {
-        private struct DebugObject
-        {
-            public Color Color { get; internal set; }
-            public Rectangle Rectangle { get; internal set; }
-        }
+        #region Private Fields
+
+        private static List<DebugObject> objects;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         static Debug()
         {
             objects = new List<DebugObject>();
         }
 
-        private static List<DebugObject> objects;
+        #endregion Public Constructors
 
-        public static void DrawRectangle(Rectangle rect)
-        {
-            DrawRectangle(rect, Color.White);
-        }
-
-        public static void DrawRectangle(Rectangle rect, Color color)
-        {
-            DebugObject o = new DebugObject();
-            o.Rectangle = rect;
-            o.Color = color;
-            objects.Add(o);
-        }
+        #region Public Methods
 
         public static void Draw(SpriteBatch spriteBatch)
         {
@@ -48,15 +37,17 @@ namespace Lemmings
             objects.Clear();
         }
 
-        private static void PrintSave(string text)
+        public static void DrawRectangle(Rectangle rect)
         {
-            string output = string.Format("[{0}] {1}", DateTime.Now.ToShortTimeString(), text);
-            
-            Console.WriteLine(output);
-            using (StreamWriter writer = File.AppendText("debug.log"))
-            {
-                writer.WriteLine(output);
-            }
+            DrawRectangle(rect, Color.White);
+        }
+
+        public static void DrawRectangle(Rectangle rect, Color color)
+        {
+            DebugObject o = new DebugObject();
+            o.Rectangle = rect;
+            o.Color = color;
+            objects.Add(o);
         }
 
         public static void Log(object obj)
@@ -93,5 +84,36 @@ namespace Lemmings
             string output = string.Format(text, args);
             PrintSave(output);
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static void PrintSave(string text)
+        {
+            string output = string.Format("[{0}] {1}", DateTime.Now.ToShortTimeString(), text);
+
+            Console.WriteLine(output);
+            using (StreamWriter writer = File.AppendText("debug.log"))
+            {
+                writer.WriteLine(output);
+            }
+        }
+
+        #endregion Private Methods
+
+        #region Private Structs
+
+        private struct DebugObject
+        {
+            #region Public Properties
+
+            public Color Color { get; internal set; }
+            public Rectangle Rectangle { get; internal set; }
+
+            #endregion Public Properties
+        }
+
+        #endregion Private Structs
     }
 }

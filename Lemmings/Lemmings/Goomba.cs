@@ -15,12 +15,9 @@ namespace Lemmings
     {
         #region Private Fields
 
-        private bool running;
-
         private Dictionary<GoombaState, SpriteAnimation> animations;
-
         private Vector2 position;
-
+        private bool running;
         private GoombaState state;
 
         #endregion Private Fields

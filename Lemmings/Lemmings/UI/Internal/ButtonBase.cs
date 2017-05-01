@@ -8,14 +8,6 @@ namespace Lemmings.UI.Internal
     {
         #region Protected Fields
 
-        protected string localizationKey;
-
-        public string LocalizationKey
-        {
-            get { return localizationKey; }
-            set { localizationKey = value; Text = Localizer.GetString(localizationKey); }
-        }
-
         protected Color background;
         protected Color backgroundHover;
         protected Rectangle bounds;
@@ -23,31 +15,15 @@ namespace Lemmings.UI.Internal
         protected Color foreground;
         protected Color foregroundHover;
         protected bool hover;
+        protected string localizationKey;
+
         protected string text;
 
         protected Vector2 textDimension;
+
         protected Vector2 textLocation;
 
         protected int texture;
-
-        public event UIEventHandler Click;
-        public event UIEventHandler Focus;
-        public event UIEventHandler LostFocus;
-
-        protected void OnClick()
-        {
-            Click?.Invoke(this);
-        }
-
-        protected void OnFocus()
-        {
-            Focus?.Invoke(this);
-        }
-
-        protected void OnLostFocus()
-        {
-            LostFocus?.Invoke(this);
-        }
 
         #endregion Protected Fields
 
@@ -60,15 +36,21 @@ namespace Lemmings.UI.Internal
             foreground = foregroundHover = Color.Black;
             text = string.Empty;
             texture = -1;
+            font = string.Empty;
             Localizer.CultureChanged += Localizer_CultureChanged;
         }
 
-        private void Localizer_CultureChanged(string culture)
-        {
-            Text = Localizer.GetString(localizationKey);
-        }
-
         #endregion Public Constructors
+
+        #region Public Events
+
+        public event UIEventHandler Click;
+
+        public event UIEventHandler Focus;
+
+        public event UIEventHandler LostFocus;
+
+        #endregion Public Events
 
         #region Public Properties
 
@@ -87,13 +69,27 @@ namespace Lemmings.UI.Internal
         public Rectangle Bounds
         {
             get { return bounds; }
-            set { bounds = value; }
+        }
+
+        public Point Dimension
+        {
+            get { return new Point(bounds.Width, bounds.Height); }
+            set
+            {
+                bounds.Width = value.X;
+                bounds.Height = value.Y;
+                MeasureString();
+            }
         }
 
         public string Font
         {
             get { return font; }
-            set { font = value; }
+            set
+            {
+                font = value;
+                MeasureString();
+            }
         }
 
         public Color Foreground
@@ -111,6 +107,12 @@ namespace Lemmings.UI.Internal
         public bool Hover
         {
             get { return hover; }
+        }
+
+        public string LocalizationKey
+        {
+            get { return localizationKey; }
+            set { localizationKey = value; Text = Localizer.GetString(localizationKey); }
         }
 
         public string Text
@@ -133,17 +135,18 @@ namespace Lemmings.UI.Internal
 
         #region Public Methods
 
-        public override void Update(GameTime gameTime)
-        {
-
-            base.Update(gameTime);
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             DrawButton(spriteBatch);
             DrawText(spriteBatch);
             base.Draw(spriteBatch);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            Interaction();
+
+            base.Update(gameTime);
         }
 
         #endregion Public Methods
@@ -163,12 +166,51 @@ namespace Lemmings.UI.Internal
             spriteBatch.DrawString(Assetmanager.GetFont(font), text, textLocation, hover ? foregroundHover : foreground);
         }
 
+        protected virtual void Interaction()
+        {
+            Point cursor = Input.MousePosition();
+            bool hovered = bounds.Contains(cursor);
+
+            if (hovered & !hover)
+                OnFocus();
+            else if (hover & !hovered)
+                OnLostFocus();
+
+            hover = hovered;
+            if (hover && Input.MousePressed(MouseButton.Left))
+                OnClick();
+        }
+
         protected virtual void MeasureString()
         {
             textDimension = Assetmanager.GetFont(font).MeasureString(text);
             textLocation = new Vector2(bounds.Center.X, bounds.Center.Y) - textDimension * 0.5f;
         }
 
+        protected void OnClick()
+        {
+            Click?.Invoke(this);
+        }
+
+        protected void OnFocus()
+        {
+            Focus?.Invoke(this);
+        }
+
+        protected void OnLostFocus()
+        {
+            LostFocus?.Invoke(this);
+        }
+
         #endregion Protected Methods
+
+        #region Private Methods
+
+        private void Localizer_CultureChanged(string culture)
+        {
+            Text = Localizer.GetString(localizationKey);
+        }
+
+        #endregion Private Methods
     }
 }

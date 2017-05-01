@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Lemmings.UI.Internal
+﻿namespace Lemmings.UI.Internal
 {
     public delegate void UIEventHandler(IInteractableUI element);
 
     public interface IInteractableUI
     {
+        #region Public Events
+
         event UIEventHandler Click;
 
         event UIEventHandler Focus;
 
         event UIEventHandler LostFocus;
+
+        #endregion Public Events
     }
 }
