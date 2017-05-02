@@ -70,6 +70,9 @@ namespace Lemmings.Localization
 
         public static string GetString(string identifier)
         {
+            if (string.IsNullOrWhiteSpace(identifier))
+                return string.Empty;
+
             if (!localizations.ContainsKey(currentCulture))
                 throw new LocalizationNotFoundException(currentCulture);
 

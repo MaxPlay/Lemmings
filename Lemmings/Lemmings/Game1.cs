@@ -105,6 +105,7 @@ namespace Lemmings
         /// </summary>
         protected override void UnloadContent()
         {
+            Settings.Instance.Save();
         }
 
         /// <summary>

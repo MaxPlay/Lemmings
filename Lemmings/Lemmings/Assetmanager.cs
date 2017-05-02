@@ -63,7 +63,7 @@ namespace Lemmings
                 s.Name = name;
                 sfx.Add(s);
 
-                return sfx.IndexOf(s);
+                return sfx.Count - 1;
             }
 
             return sfx.IndexOf(sf[0]);
@@ -79,7 +79,7 @@ namespace Lemmings
                 s.Name = name;
                 shaders.Add(s);
 
-                return shaders.IndexOf(s);
+                return shaders.Count - 1;
             }
 
             return shaders.IndexOf(shader[0]);
@@ -95,7 +95,7 @@ namespace Lemmings
                 tex.Name = name;
                 textures.Add(tex);
 
-                return textures.IndexOf(tex);
+                return textures.Count - 1;
             }
 
             return textures.IndexOf(texture[0]);

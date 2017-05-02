@@ -11,6 +11,7 @@ namespace Lemmings.States
         #region Private Fields
 
         private Button btnExit;
+        private Slider slider;
         private UIManager ui;
 
         #endregion Private Fields
@@ -25,6 +26,11 @@ namespace Lemmings.States
             btnExit.LocalizationKey = "language";
             btnExit.Focus += (IInteractableUI i) => { Localization.Localizer.ChangeCulture("de-DE"); };
             btnExit.Dimension = new Point(100, 200);
+            slider = new Slider(ui, ui);
+            slider.Position = new Vector2(300, 300);
+            slider.Texture = Assetmanager.AquireTexture("Textures/UI/Slider");
+            slider.SetHandleTexture(Assetmanager.AquireTexture("Textures/UI/Handle"));
+            slider.RecalculateBounds();
         }
 
         #endregion Public Constructors

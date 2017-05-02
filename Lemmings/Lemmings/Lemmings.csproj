@@ -98,6 +98,7 @@
     <Compile Include="UI\Checkbox.cs" />
     <Compile Include="UI\Internal\ButtonBase.cs" />
     <Compile Include="UI\Internal\CheckState.cs" />
+    <Compile Include="UI\Internal\IDrawableUI.cs" />
     <Compile Include="UI\Internal\IInteractableUI.cs" />
     <Compile Include="UI\Internal\IUIElement.cs" />
     <Compile Include="UI\Label.cs" />

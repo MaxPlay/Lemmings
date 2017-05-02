@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Lemmings.UI.Internal
 {
-    public class ButtonBase : UIElement, IInteractableUI
+    public class ButtonBase : UIElement, IInteractableUI, IDrawableUI
     {
         #region Protected Fields
 
@@ -208,6 +208,9 @@ namespace Lemmings.UI.Internal
 
         private void Localizer_CultureChanged(string culture)
         {
+            if (string.IsNullOrWhiteSpace(localizationKey))
+                return;
+
             Text = Localizer.GetString(localizationKey);
         }
 

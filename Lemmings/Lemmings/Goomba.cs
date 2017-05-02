@@ -42,9 +42,14 @@ namespace Lemmings
             Unspecified = 0,
             Idle = 1,
             WalkUp = 11,
+
+            #region Public Fields
+
             WalkLeft,
             WalkDown,
             WalkRight
+
+            #endregion Public Fields
         }
 
         #endregion Public Enums
@@ -58,6 +63,8 @@ namespace Lemmings
         {
             get { return animations; }
         }
+
+        #endregion Public Properties
 
         /// <summary>
         /// The goombas position in world space
@@ -76,10 +83,6 @@ namespace Lemmings
             get { return state; }
             set { state = value; }
         }
-
-        #endregion Public Properties
-
-        #region Public Methods
 
         /// <summary>
         /// Renders the goomba at its location in worldspace with the current frame rendered
@@ -117,10 +120,6 @@ namespace Lemmings
             animations[state].Update(gameTime, running ? 2 : 1);
             //Debug.Log("{0} {1}", state, animations[state].CurrentFrame); //Debug the frames
         }
-
-        #endregion Public Methods
-
-        #region Private Methods
 
         private Vector2 Input(Vector2 speed)
         {
@@ -180,7 +179,5 @@ namespace Lemmings
                 animations.Add(state, animation); //add the animation to the hashmap
             }
         }
-
-        #endregion Private Methods
     }
 }
