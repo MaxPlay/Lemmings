@@ -1,4 +1,5 @@
-﻿using Lemmings.Statemachine;
+﻿using Lemmings.Levels;
+using Lemmings.Statemachine;
 using Lemmings.UI;
 using Lemmings.UI.Internal;
 using Microsoft.Xna.Framework;
@@ -12,6 +13,7 @@ namespace Lemmings.States
 
         private Button btnExit;
         private Slider slider;
+        private Tile t;
         private UIManager ui;
 
         #endregion Private Fields
@@ -31,6 +33,14 @@ namespace Lemmings.States
             slider.Texture = Assetmanager.AquireTexture("Textures/UI/Slider");
             slider.SetHandleTexture(Assetmanager.AquireTexture("Textures/UI/Handle"));
             slider.RecalculateBounds();
+
+            int texture = Assetmanager.AquireTexture("test");
+
+            t = new Tile(new Point(0, 0), 32);
+            t.Texture = texture;
+
+            t.GenerateCollision();
+            Debug.Log(t.Collision.ToString2D());
         }
 
         #endregion Public Constructors
@@ -39,7 +49,12 @@ namespace Lemmings.States
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            ui.Draw(spriteBatch);
+            //  ui.Draw(spriteBatch);
+
+            for (int i = 0; i < t.Collision.Bounds.Length; i++)
+            {
+                Debug.DrawRectangle(t.Collision.Bounds[i], new Color(i / (float)t.Collision.Bounds.Length, 0.5f, 1-i / (float)t.Collision.Bounds.Length));
+            }
         }
 
         public override void Initialize()

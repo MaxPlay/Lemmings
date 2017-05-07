@@ -16,7 +16,7 @@ namespace Lemmings
 
         private static ContentManager contentManager;
         private static Texture2D pixel;
-        private GraphicsDeviceManager graphics;
+        private static GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private StateMachine statemachine;
 
@@ -43,6 +43,14 @@ namespace Lemmings
         }
 
         public static Texture2D Pixel { get { return pixel; } }
+
+        public static GraphicsDeviceManager Graphics
+        {
+            get
+            {
+                return graphics;
+            }
+        }
 
         #endregion Public Properties
 
