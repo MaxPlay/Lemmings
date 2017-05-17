@@ -1,4 +1,5 @@
 using Lemmings.Localization;
+using Lemmings.Rendering;
 using Lemmings.Statemachine;
 using Lemmings.States;
 using Microsoft.Xna.Framework;
@@ -86,6 +87,7 @@ namespace Lemmings
             Assetmanager.AquireFont("Fonts/default");
             Localizer.LoadLocalization();
             Settings.Instance.Load();
+            Camera.Main = new Camera(graphics);
 
             statemachine = new StateMachine();
             new SplashScreen("splash", statemachine);

@@ -5,9 +5,11 @@ using System.Text;
 
 namespace Lemmings.Levels
 {
-    public class Level
+    public class GameLayer : Layer
     {
-        List<Layer> layers;
-        GameLayer game;
+        public GameLayer() : base()
+        {
+
+        }
     }
 }

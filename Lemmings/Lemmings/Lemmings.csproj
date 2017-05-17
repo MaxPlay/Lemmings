@@ -85,6 +85,8 @@
     <Compile Include="Exceptions\NotInitializedException.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Levels\Collision\QuadTree.cs" />
+    <Compile Include="Levels\GameLayer.cs" />
+    <Compile Include="Levels\Layer.cs" />
     <Compile Include="Levels\Level.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="Levels\Collision\TileCollision.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Rendering\Camera.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Statemachine\State.cs" />
