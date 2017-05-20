@@ -1,4 +1,5 @@
 ﻿using Lemmings.Localization;
+using Lemmings.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -17,13 +18,12 @@ namespace Lemmings.UI.Internal
         protected bool hover;
         protected string localizationKey;
 
+        protected Sprite sprite;
         protected string text;
 
         protected Vector2 textDimension;
 
         protected Vector2 textLocation;
-
-        protected int texture;
 
         #endregion Protected Fields
 
@@ -35,7 +35,6 @@ namespace Lemmings.UI.Internal
             backgroundHover = Color.White;
             foreground = foregroundHover = Color.Black;
             text = string.Empty;
-            texture = -1;
             font = string.Empty;
             Localizer.CultureChanged += Localizer_CultureChanged;
         }
@@ -115,6 +114,12 @@ namespace Lemmings.UI.Internal
             set { localizationKey = value; Text = Localizer.GetString(localizationKey); }
         }
 
+        public Sprite Sprite
+        {
+            get { return sprite; }
+            set { sprite = value; }
+        }
+
         public string Text
         {
             get { return text; }
@@ -123,12 +128,6 @@ namespace Lemmings.UI.Internal
                 text = value;
                 MeasureString();
             }
-        }
-
-        public int Texture
-        {
-            get { return texture; }
-            set { texture = value; }
         }
 
         #endregion Public Properties
@@ -155,7 +154,7 @@ namespace Lemmings.UI.Internal
 
         protected virtual void DrawButton(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Assetmanager.GetTexture(texture), bounds, hover ? backgroundHover : background);
+            sprite?.Draw(spriteBatch, bounds, hover ? backgroundHover : background);
         }
 
         protected virtual void DrawText(SpriteBatch spriteBatch)

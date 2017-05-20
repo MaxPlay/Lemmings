@@ -1,25 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Lemmings.Levels
+﻿namespace Lemmings.Levels
 {
     public class TileMap
     {
+        #region Private Fields
+
         private int height;
+
+        private int width;
+
+        #endregion Private Fields
+
+        #region Public Properties
 
         public int Height
         {
             get { return height; }
         }
 
-        private int width;
-
         public int Width
         {
             get { return width; }
         }
 
+        #endregion Public Properties
     }
 }

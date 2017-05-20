@@ -1,4 +1,5 @@
-﻿using Lemmings.UI.Internal;
+﻿using Lemmings.Rendering;
+using Lemmings.UI.Internal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -19,8 +20,8 @@ namespace Lemmings.UI
         private bool hover;
         private bool pressed;
         private Vector2 pressedPosition;
+        private Sprite sprite;
         private int steps;
-        private int texture;
 
         private float value;
 
@@ -107,16 +108,16 @@ namespace Lemmings.UI
             set { hover = value; }
         }
 
+        public Sprite Sprite
+        {
+            get { return sprite; }
+            set { sprite = value; }
+        }
+
         public int Steps
         {
             get { return steps; }
             set { steps = value; }
-        }
-
-        public int Texture
-        {
-            get { return texture; }
-            set { texture = value; }
         }
 
         public float Value
@@ -141,24 +142,26 @@ namespace Lemmings.UI
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Assetmanager.GetTexture(texture), bounds, hover ? backgroundHover : background);
+            sprite?.Draw(spriteBatch, bounds, hover ? backgroundHover : background);
             handle.Draw(spriteBatch, hover ? foregroundHover : foreground);
             base.Draw(spriteBatch);
         }
 
         public void RecalculateBounds()
         {
-            Texture2D tex = Assetmanager.GetTexture(texture);
-            bounds = new Rectangle((int)position.X, (int)position.Y, tex.Width, tex.Height);
+            if (sprite == null)
+                return;
+
+            bounds = new Rectangle((int)position.X, (int)position.Y, sprite.Bounds.Width, sprite.Bounds.Height);
             handle.RecalculateBounds();
             handle.StartPosition = new Vector2(bounds.Left - handle.Bounds.Width / 2f, bounds.Center.Y - handle.Bounds.Height / 2);
             handle.EndPosition = new Vector2(bounds.Right - handle.Bounds.Width / 2f, bounds.Center.Y - handle.Bounds.Height / 2);
             handle.Value = value;
         }
 
-        public void SetHandleTexture(int texture)
+        public void SetHandleSprite(Sprite sprite)
         {
-            handle.Texture = texture;
+            handle.Sprite = sprite;
         }
 
         public override void Update(GameTime gameTime)
@@ -264,9 +267,9 @@ namespace Lemmings.UI
 
         #endregion Private Methods
 
-        #region Public Structs
+        #region Public Classes
 
-        public struct SliderHandle
+        public class SliderHandle
         {
             #region Private Fields
 
@@ -276,9 +279,8 @@ namespace Lemmings.UI
 
             private Vector2 position;
 
+            private Sprite sprite;
             private Vector2 start;
-
-            private int texture;
 
             #endregion Private Fields
 
@@ -301,16 +303,16 @@ namespace Lemmings.UI
                 get { return position; }
             }
 
+            public Sprite Sprite
+            {
+                get { return sprite; }
+                set { sprite = value; }
+            }
+
             public Vector2 StartPosition
             {
                 get { return start; }
                 set { start = value; }
-            }
-
-            public int Texture
-            {
-                get { return texture; }
-                set { texture = value; }
             }
 
             public float Value
@@ -329,12 +331,15 @@ namespace Lemmings.UI
 
             public void Draw(SpriteBatch spriteBatch, Color color)
             {
-                spriteBatch.Draw(Assetmanager.GetTexture(texture), position, color);
+                sprite?.Draw(spriteBatch, position, color);
             }
 
             public void RecalculateBounds()
             {
-                bounds = Assetmanager.GetTexture(texture).Bounds;
+                if (sprite == null)
+                    return;
+
+                bounds = sprite.Bounds;
                 bounds.X = (int)position.X;
                 bounds.Y = (int)position.Y;
             }
@@ -342,6 +347,6 @@ namespace Lemmings.UI
             #endregion Public Methods
         }
 
-        #endregion Public Structs
+        #endregion Public Classes
     }
 }

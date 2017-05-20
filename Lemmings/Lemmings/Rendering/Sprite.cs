@@ -38,6 +38,8 @@ namespace Lemmings.Rendering
 
         #region Public Properties
 
+        public Rectangle Bounds { get { return bounds; } }
+
         /// <summary>
         /// The rotation of the Sprite in degrees
         /// </summary>
@@ -109,7 +111,7 @@ namespace Lemmings.Rendering
         /// <param name="color">the color of the sprite</param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color)
         {
-            spriteBatch.Draw(Assetmanager.GetTexture(texture), new Rectangle((int)position.X, (int)position.Y, bounds.X, bounds.Y), null, color, rotation, origin, SpriteEffects.None, 0);
+            spriteBatch.Draw(Assetmanager.GetTexture(texture), new Rectangle((int)position.X, (int)position.Y, bounds.Width, bounds.Height), null, color, rotation, origin, SpriteEffects.None, 0);
         }
 
         /// <summary>
@@ -120,6 +122,17 @@ namespace Lemmings.Rendering
         public void Draw(SpriteBatch spriteBatch, Rectangle bounds)
         {
             Draw(spriteBatch, bounds, Color.White);
+        }
+
+        /// <summary>
+        /// Draws the sprite in a given area
+        /// </summary>
+        /// <param name="spriteBatch">allows rendering the sprite to the screen</param>
+        /// <param name="bounds">the rendered area</param>
+        /// <param name="color">the color of the sprite</param>
+        public void Draw(SpriteBatch spriteBatch, Rectangle bounds, Color color)
+        {
+            spriteBatch.Draw(Assetmanager.GetTexture(texture), bounds, null, color, rotation, origin, SpriteEffects.None, 0);
         }
 
         /// <summary>
@@ -169,20 +182,5 @@ namespace Lemmings.Rendering
         }
 
         #endregion Public Methods
-
-        #region Private Methods
-
-        /// <summary>
-        /// Draws the sprite in a given area
-        /// </summary>
-        /// <param name="spriteBatch">allows rendering the sprite to the screen</param>
-        /// <param name="bounds">the rendered area</param>
-        /// <param name="color">the color of the sprite</param>
-        public void Draw(SpriteBatch spriteBatch, Rectangle bounds, Color color)
-        {
-            spriteBatch.Draw(Assetmanager.GetTexture(texture), bounds, null, color, rotation, origin, SpriteEffects.None, 0);
-        }
-
-        #endregion Private Methods
     }
 }

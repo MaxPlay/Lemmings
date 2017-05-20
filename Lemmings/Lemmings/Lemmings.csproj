@@ -83,7 +83,7 @@
     <Compile Include="Extensions\ArrayExtension.cs" />
     <Compile Include="Goomba.cs" />
     <Compile Include="Exceptions\NotInitializedException.cs" />
-    <Compile Include="Rendering\ImpossibleFrameSizeException.cs" />
+    <Compile Include="Exceptions\ImpossibleFrameSizeException.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Levels\Collision\QuadTree.cs" />
     <Compile Include="Levels\GameLayer.cs" />
@@ -99,7 +99,7 @@
     <Compile Include="Rendering\Camera.cs" />
     <Compile Include="Rendering\FrameSprite.cs" />
     <Compile Include="Rendering\SlicedSprite.cs" />
-    <Compile Include="Rendering\SlicedSpriteFormatException.cs" />
+    <Compile Include="Exceptions\SlicedSpriteFormatException.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Rendering\Sprite.cs" />
     <Compile Include="Statemachine\State.cs" />

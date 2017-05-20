@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Lemmings.Levels
 {
     public class Level
     {
-        List<Layer> layers;
-        GameLayer game;
+        #region Private Fields
+
+        private GameLayer game;
+        private List<Layer> layers;
+
+        #endregion Private Fields
     }
 }

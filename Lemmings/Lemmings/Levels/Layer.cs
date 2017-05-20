@@ -1,24 +1,29 @@
 ﻿using Lemmings.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Lemmings.Levels
 {
     public class Layer
     {
-        protected TileMap tiles;
-
-        public TileMap Tiles
-        {
-            get { return tiles; }
-            set { tiles = value; }
-        }
+        #region Protected Fields
 
         protected Rectangle bounds;
+        protected Vector2 parallaxOffset;
+        protected TileMap tiles;
+
+        #endregion Protected Fields
+
+        #region Public Constructors
+
+        public Layer()
+        {
+            tiles = new TileMap();
+        }
+
+        #endregion Public Constructors
+
+        #region Public Properties
 
         public Rectangle Bounds
         {
@@ -26,17 +31,15 @@ namespace Lemmings.Levels
             set { bounds = value; }
         }
 
-        protected Vector2 parallaxOffset;
-
-        public Layer()
+        public TileMap Tiles
         {
-            tiles = new TileMap();
+            get { return tiles; }
+            set { tiles = value; }
         }
 
-        public void GenerateParallax(GameLayer game)
-        {
-            parallaxOffset = new Vector2(game.bounds.Width - bounds.Width, game.bounds.Height - bounds.Height);
-        }
+        #endregion Public Properties
+
+        #region Public Methods
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -46,9 +49,15 @@ namespace Lemmings.Levels
             {
                 for (int x = 0; x < tiles.Width; x++)
                 {
-
                 }
             }
         }
+
+        public void GenerateParallax(GameLayer game)
+        {
+            parallaxOffset = new Vector2(game.bounds.Width - bounds.Width, game.bounds.Height - bounds.Height);
+        }
+
+        #endregion Public Methods
     }
 }

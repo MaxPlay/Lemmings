@@ -1,51 +1,27 @@
-﻿using Lemmings.UI.Internal;
+﻿using Lemmings.Exceptions;
+using Lemmings.UI.Internal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Lemmings.Rendering
 {
     public class SlicedSprite : Sprite
     {
+        #region Private Fields
+
+        private int bottom;
+        private int bottomHeight;
+        private int centerHeight;
+        private int centerWidth;
+        private int left;
+        private int right;
+        private int rightWidth;
+        private Rectangle[] source;
         private int top;
 
-        public int Top
-        {
-            get { return top; }
-            set { top = value; UpdateSources(); }
-        }
-        private int bottom;
+        #endregion Private Fields
 
-        public int Bottom
-        {
-            get { return bottom; }
-            set { bottom = value; UpdateSources(); }
-        }
-
-        private int left;
-
-        public int Left
-        {
-            get { return left; }
-            set { left = value; UpdateSources(); }
-        }
-
-        private int right;
-
-        public int Right
-        {
-            get { return right; }
-            set { right = value; UpdateSources(); }
-        }
-
-        Rectangle[] source;
-        private int centerWidth;
-        private int rightWidth;
-        private int centerHeight;
-        private int bottomHeight;
+        #region Public Constructors
 
         public SlicedSprite(string name, string texture) : base(name, texture)
         {
@@ -55,30 +31,37 @@ namespace Lemmings.Rendering
             bottom = bounds.Height;
         }
 
-        void UpdateSources()
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public int Bottom
         {
-            if (left > right)
-                throw new SlicedSpriteFormatException("Horizontal");
-            if (top > bottom)
-                throw new SlicedSpriteFormatException("Vertical");
-
-            centerWidth = right - left;
-            rightWidth = bounds.Width - right;
-            centerHeight = bottom - top;
-            bottomHeight = bounds.Height - bottom;
-
-            source[(int)Handle.TopLeft] = new Rectangle(0, 0, left, top);
-            source[(int)Handle.TopCenter] = new Rectangle(left, 0, centerWidth, top);
-            source[(int)Handle.TopRight] = new Rectangle(right, 0, rightWidth, top);
-
-            source[(int)Handle.MiddleLeft] = new Rectangle(0, top, left, centerHeight);
-            source[(int)Handle.Center] = new Rectangle(left, top, centerWidth, centerHeight);
-            source[(int)Handle.MiddleRight] = new Rectangle(right, top, rightWidth, centerHeight);
-
-            source[(int)Handle.BottomLeft] = new Rectangle(0, bottom, left, bottomHeight);
-            source[(int)Handle.BottomCenter] = new Rectangle(left, bottom, centerWidth, bottomHeight);
-            source[(int)Handle.BottomRight] = new Rectangle(right, bottom, rightWidth, bottomHeight);
+            get { return bottom; }
+            set { bottom = value; UpdateSources(); }
         }
+
+        public int Left
+        {
+            get { return left; }
+            set { left = value; UpdateSources(); }
+        }
+
+        public int Right
+        {
+            get { return right; }
+            set { right = value; UpdateSources(); }
+        }
+
+        public int Top
+        {
+            get { return top; }
+            set { top = value; UpdateSources(); }
+        }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public new void Draw(SpriteBatch spriteBatch, Rectangle bounds)
         {
@@ -107,5 +90,36 @@ namespace Lemmings.Rendering
             spriteBatch.Draw(tex, new Rectangle(bounds.Left + left, bounds.Top + top + centerHeight, centerWidth, bottomHeight), source[(int)Handle.BottomCenter], color);
             spriteBatch.Draw(tex, new Rectangle(bounds.Left + left + centerWidth, bounds.Top + top + centerHeight, rightWidth, bottomHeight), source[(int)Handle.BottomRight], color);
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void UpdateSources()
+        {
+            if (left > right)
+                throw new SlicedSpriteFormatException("Horizontal");
+            if (top > bottom)
+                throw new SlicedSpriteFormatException("Vertical");
+
+            centerWidth = right - left;
+            rightWidth = bounds.Width - right;
+            centerHeight = bottom - top;
+            bottomHeight = bounds.Height - bottom;
+
+            source[(int)Handle.TopLeft] = new Rectangle(0, 0, left, top);
+            source[(int)Handle.TopCenter] = new Rectangle(left, 0, centerWidth, top);
+            source[(int)Handle.TopRight] = new Rectangle(right, 0, rightWidth, top);
+
+            source[(int)Handle.MiddleLeft] = new Rectangle(0, top, left, centerHeight);
+            source[(int)Handle.Center] = new Rectangle(left, top, centerWidth, centerHeight);
+            source[(int)Handle.MiddleRight] = new Rectangle(right, top, rightWidth, centerHeight);
+
+            source[(int)Handle.BottomLeft] = new Rectangle(0, bottom, left, bottomHeight);
+            source[(int)Handle.BottomCenter] = new Rectangle(left, bottom, centerWidth, bottomHeight);
+            source[(int)Handle.BottomRight] = new Rectangle(right, bottom, rightWidth, bottomHeight);
+        }
+
+        #endregion Private Methods
     }
 }

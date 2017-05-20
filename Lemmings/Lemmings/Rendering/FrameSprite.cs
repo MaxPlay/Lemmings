@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Lemmings.Exceptions;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 

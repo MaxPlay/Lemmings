@@ -24,6 +24,10 @@ namespace Lemmings.States
 
         public MainMenu(string name, StateMachine statemachine) : base(name, statemachine)
         {
+            Camera.Main.BackgroundColor = Color.Purple;
+            Sprite sliderSprite = new Sprite("Slider", "Textures/UI/Slider");
+            Sprite sliderHandleSprite = new Sprite("Handle", "Textures/UI/Handle");
+
             ui = new UIManager();
             btnExit = new Button(ui, ui);
             btnExit.Font = "Fonts/default";
@@ -32,8 +36,8 @@ namespace Lemmings.States
             btnExit.Dimension = new Point(100, 200);
             slider = new Slider(ui, ui);
             slider.Position = new Vector2(300, 300);
-            slider.Texture = Assetmanager.AquireTexture("Textures/UI/Slider");
-            slider.SetHandleTexture(Assetmanager.AquireTexture("Textures/UI/Handle"));
+            slider.Sprite = sliderSprite;
+            slider.SetHandleSprite(sliderHandleSprite);
             slider.RecalculateBounds();
 
             int texture = Assetmanager.AquireTexture("test");
@@ -44,7 +48,7 @@ namespace Lemmings.States
             t.GenerateCollision();
             Debug.Log(t.Collision.ToString2D());
 
-             sprite = new SlicedSprite("slice-test", "slice-test");
+            sprite = new SlicedSprite("slice-test", "slice-test");
             sprite.Top = 20;
             sprite.Left = 20;
             sprite.Right = 80;
@@ -57,13 +61,10 @@ namespace Lemmings.States
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //  ui.Draw(spriteBatch);
-            spriteBatch.Begin();
-            sprite.Draw(spriteBatch, new Rectangle(100,100,300,200));
-            spriteBatch.End();
+            ui.Draw(spriteBatch);
             for (int i = 0; i < t.Collision.Bounds.Length; i++)
             {
-                Debug.DrawRectangle(t.Collision.Bounds[i], new Color(i / (float)t.Collision.Bounds.Length, 0.5f, 1-i / (float)t.Collision.Bounds.Length));
+                Debug.DrawRectangle(t.Collision.Bounds[i], new Color(i / (float)t.Collision.Bounds.Length, 0.5f, 1 - i / (float)t.Collision.Bounds.Length));
             }
         }
 

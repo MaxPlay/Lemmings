@@ -47,7 +47,6 @@ namespace Lemmings
 
         public static void DrawRectangle(Rectangle rect, FillMode mode)
         {
-
             DrawRectangle(rect, Color.White, mode);
         }
 
@@ -61,6 +60,7 @@ namespace Lemmings
                 case FillMode.Solid:
                     r.Add(rect);
                     break;
+
                 case FillMode.WireFrame:
                     r.Add(new Rectangle(rect.Left, rect.Top, rect.Width, 1));
                     r.Add(new Rectangle(rect.Left, rect.Top, 1, rect.Height));

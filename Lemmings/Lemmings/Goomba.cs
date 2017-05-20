@@ -2,7 +2,6 @@
 using Lemmings.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,7 +46,12 @@ namespace Lemmings
 
             WalkLeft,
             WalkDown,
+
+            #region Public Fields
+
             WalkRight
+
+            #endregion Public Fields
 
             #endregion Public Fields
         }

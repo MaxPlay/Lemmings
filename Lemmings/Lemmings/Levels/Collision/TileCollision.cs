@@ -172,6 +172,7 @@ namespace Lemmings.Levels.Collision
                 GetCollision(14),
                 GetCollision(15));
         }
+
         public string ToString2D()
         {
             return string.Format("[{0}{1}{2}{3}]\n[{4}{5}{6}{7}]\n[{8}{9}{10}{11}]\n[{12}{13}{14}{15}]",

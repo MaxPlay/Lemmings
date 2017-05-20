@@ -1,4 +1,5 @@
-﻿using Lemmings.UI.Internal;
+﻿using Lemmings.Rendering;
+using Lemmings.UI.Internal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -8,7 +9,7 @@ namespace Lemmings.UI
     {
         #region Private Fields
 
-        private int checkedTexture;
+        private Sprite checkedSprite;
         private CheckState checkState;
 
         private float intermediateTransparency;
@@ -27,10 +28,10 @@ namespace Lemmings.UI
 
         #region Public Properties
 
-        public int CheckedTexture
+        public Sprite CheckedSprite
         {
-            get { return checkedTexture; }
-            set { checkedTexture = value; }
+            get { return checkedSprite; }
+            set { checkedSprite = value; }
         }
 
         public CheckState CheckState
@@ -57,9 +58,9 @@ namespace Lemmings.UI
 
         protected override void DrawButton(SpriteBatch spriteBatch)
         {
-            if (checkState == CheckState.Checked)
-                spriteBatch.Draw(Assetmanager.GetTexture(checkedTexture), bounds, foreground * ((checkState == CheckState.Intermediate) ? intermediateTransparency : 1));
             base.DrawButton(spriteBatch);
+            if (checkState == CheckState.Checked)
+                checkedSprite?.Draw(spriteBatch, bounds, foreground * ((checkState == CheckState.Intermediate) ? intermediateTransparency : 1));
         }
 
         protected override void DrawText(SpriteBatch spriteBatch)

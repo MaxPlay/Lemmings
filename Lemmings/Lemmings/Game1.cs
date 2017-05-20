@@ -16,8 +16,8 @@ namespace Lemmings
         #region Private Fields
 
         private static ContentManager contentManager;
-        private static Texture2D pixel;
         private static GraphicsDeviceManager graphics;
+        private static Texture2D pixel;
         private SpriteBatch spriteBatch;
         private StateMachine statemachine;
 
@@ -43,8 +43,6 @@ namespace Lemmings
             get { return contentManager; }
         }
 
-        public static Texture2D Pixel { get { return pixel; } }
-
         public static GraphicsDeviceManager Graphics
         {
             get
@@ -52,6 +50,8 @@ namespace Lemmings
                 return graphics;
             }
         }
+
+        public static Texture2D Pixel { get { return pixel; } }
 
         #endregion Public Properties
 
@@ -63,7 +63,7 @@ namespace Lemmings
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Camera.Main.BackgroundColor);
             statemachine.Draw(spriteBatch);
             Debug.Draw(spriteBatch);
 

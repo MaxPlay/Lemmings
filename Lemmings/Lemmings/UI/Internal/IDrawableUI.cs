@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Lemmings.Rendering;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Lemmings.UI.Internal
@@ -12,7 +13,7 @@ namespace Lemmings.UI.Internal
         Color Foreground { get; set; }
         Color ForegroundHover { get; set; }
         bool Hover { get; }
-        int Texture { get; set; }
+        Sprite Sprite { get; set; }
 
         void Draw(SpriteBatch spriteBatch);
     }

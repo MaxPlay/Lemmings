@@ -1,33 +1,90 @@
-﻿using System;
+﻿using Lemmings.Extensions;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Lemmings.Extensions;
 
 namespace Lemmings.Levels.Collision
 {
     public class QuadTree
     {
+        #region Private Fields
+
+        private Point offset;
+
+        private QuadNode root;
+
+        private int tilesize;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public QuadTree(Point offset, int tilesize)
+        {
+            this.offset = offset;
+            this.tilesize = tilesize;
+        }
+
+        #endregion Public Constructors
+
+        #region Public Enums
+
         public enum Directions : int
         {
+            #region Public Fields
+
             NW = 0,
             NE = 1,
-            SW = 2,
+            SW = 2
+
+            #endregion Public Fields
+
+,
             SE = 3
         }
 
-        class QuadNode
-        {
-            int value;
-            QuadNode[] children;
-            private bool lastNode;
+        #endregion Public Enums
 
-            public bool LastNode
+        #region Public Methods
+
+        public Rectangle[] Compute(TileCollision value)
+        {
+            bool[,] spatialRepresentation = GenerateSpatialRepresentation(value);
+            root = new QuadNode(spatialRepresentation);
+            return root.GenerateRectangles(offset, tilesize, 0).ToArray();
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private bool[,] GenerateSpatialRepresentation(TileCollision value)
+        {
+            bool[,] representation = new bool[4, 4];
+            for (int y = 0; y < 4; y++)
             {
-                get
+                for (int x = 0; x < 4; x++)
                 {
-                    return lastNode;
+                    representation[x, y] = value.GetCollision(x + y * 4);
                 }
             }
+            return representation;
+        }
+
+        #endregion Private Methods
+
+        #region Private Classes
+
+        private class QuadNode
+        {
+            #region Private Fields
+
+            private QuadNode[] children;
+            private bool lastNode;
+            private int value;
+
+            #endregion Private Fields
+
+            #region Public Constructors
 
             public QuadNode(bool[,] part)
             {
@@ -73,6 +130,22 @@ namespace Lemmings.Levels.Collision
                     halfDimension));
             }
 
+            #endregion Public Constructors
+
+            #region Public Properties
+
+            public bool LastNode
+            {
+                get
+                {
+                    return lastNode;
+                }
+            }
+
+            #endregion Public Properties
+
+            #region Public Methods
+
             public List<Rectangle> GenerateRectangles(Point offset, int tilesize, int depth)
             {
                 List<Rectangle> rects = new List<Rectangle>();
@@ -85,17 +158,21 @@ namespace Lemmings.Levels.Collision
                 }
 
                 int nextTilesize = tilesize / 2;
-                
+
                 rects.AddRange(children[(int)Directions.NW].GenerateRectangles(new Point(offset.X, offset.Y), nextTilesize, depth + 1));
                 rects.AddRange(children[(int)Directions.NE].GenerateRectangles(new Point(offset.X + nextTilesize, offset.Y), nextTilesize, depth + 1));
                 rects.AddRange(children[(int)Directions.SW].GenerateRectangles(new Point(offset.X, offset.Y + nextTilesize), nextTilesize, depth + 1));
                 rects.AddRange(children[(int)Directions.SE].GenerateRectangles(new Point(offset.X + nextTilesize, offset.Y + nextTilesize), nextTilesize, depth + 1));
-                
+
                 Optimize(rects);
 
                 return rects;
             }
-            
+
+            #endregion Public Methods
+
+            #region Private Methods
+
             private void Optimize(List<Rectangle> rects)
             {
                 List<int> replacables = new List<int>();
@@ -133,36 +210,10 @@ namespace Lemmings.Levels.Collision
 
                 rects.AddRange(replacements);
             }
+
+            #endregion Private Methods
         }
 
-        private Point offset;
-        private int tilesize;
-        private QuadNode root;
-
-        public QuadTree(Point offset, int tilesize)
-        {
-            this.offset = offset;
-            this.tilesize = tilesize;
-        }
-
-        public Rectangle[] Compute(TileCollision value)
-        {
-            bool[,] spatialRepresentation = GenerateSpatialRepresentation(value);
-            root = new QuadNode(spatialRepresentation);
-            return root.GenerateRectangles(offset, tilesize, 0).ToArray();
-        }
-
-        private bool[,] GenerateSpatialRepresentation(TileCollision value)
-        {
-            bool[,] representation = new bool[4, 4];
-            for (int y = 0; y < 4; y++)
-            {
-                for (int x = 0; x < 4; x++)
-                {
-                    representation[x, y] = value.GetCollision(x + y * 4);
-                }
-            }
-            return representation;
-        }
+        #endregion Private Classes
     }
 }

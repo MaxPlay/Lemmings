@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Lemmings.UI.Internal
+﻿namespace Lemmings.UI.Internal
 {
     /// <summary>
     /// The position of an originpoint relative to the dimension of an object
