@@ -1,4 +1,5 @@
 ﻿using Lemmings.Levels;
+using Lemmings.Rendering;
 using Lemmings.Statemachine;
 using Lemmings.UI;
 using Lemmings.UI.Internal;
@@ -13,6 +14,7 @@ namespace Lemmings.States
 
         private Button btnExit;
         private Slider slider;
+        private SlicedSprite sprite;
         private Tile t;
         private UIManager ui;
 
@@ -41,6 +43,12 @@ namespace Lemmings.States
 
             t.GenerateCollision();
             Debug.Log(t.Collision.ToString2D());
+
+             sprite = new SlicedSprite("slice-test", "slice-test");
+            sprite.Top = 20;
+            sprite.Left = 20;
+            sprite.Right = 80;
+            sprite.Bottom = 80;
         }
 
         #endregion Public Constructors
@@ -50,7 +58,9 @@ namespace Lemmings.States
         public override void Draw(SpriteBatch spriteBatch)
         {
             //  ui.Draw(spriteBatch);
-
+            spriteBatch.Begin();
+            sprite.Draw(spriteBatch, new Rectangle(100,100,300,200));
+            spriteBatch.End();
             for (int i = 0; i < t.Collision.Bounds.Length; i++)
             {
                 Debug.DrawRectangle(t.Collision.Bounds[i], new Color(i / (float)t.Collision.Bounds.Length, 0.5f, 1-i / (float)t.Collision.Bounds.Length));

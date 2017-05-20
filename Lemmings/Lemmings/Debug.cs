@@ -30,7 +30,10 @@ namespace Lemmings
             spriteBatch.Begin();
             for (int i = 0; i < objects.Count; i++)
             {
-                spriteBatch.Draw(Game1.Pixel, objects[i].Rectangle, objects[i].Color);
+                for (int j = 0; j < objects[i].Rectangles.Length; j++)
+                {
+                    spriteBatch.Draw(Game1.Pixel, objects[i].Rectangles[j], objects[i].Color);
+                }
             }
             spriteBatch.End();
 
@@ -42,12 +45,36 @@ namespace Lemmings
             DrawRectangle(rect, Color.White);
         }
 
-        public static void DrawRectangle(Rectangle rect, Color color)
+        public static void DrawRectangle(Rectangle rect, FillMode mode)
+        {
+
+            DrawRectangle(rect, Color.White, mode);
+        }
+
+        public static void DrawRectangle(Rectangle rect, Color color, FillMode mode)
         {
             DebugObject o = new DebugObject();
-            o.Rectangle = rect;
             o.Color = color;
+            List<Rectangle> r = new List<Rectangle>();
+            switch (mode)
+            {
+                case FillMode.Solid:
+                    r.Add(rect);
+                    break;
+                case FillMode.WireFrame:
+                    r.Add(new Rectangle(rect.Left, rect.Top, rect.Width, 1));
+                    r.Add(new Rectangle(rect.Left, rect.Top, 1, rect.Height));
+                    r.Add(new Rectangle(rect.Left, rect.Bottom - 1, rect.Width, 1));
+                    r.Add(new Rectangle(rect.Right - 1, rect.Top, 1, rect.Height));
+                    break;
+            }
+            o.Rectangles = r.ToArray();
             objects.Add(o);
+        }
+
+        public static void DrawRectangle(Rectangle rect, Color color)
+        {
+            DrawRectangle(rect, color, FillMode.Solid);
         }
 
         public static void Log(object obj)
@@ -109,7 +136,7 @@ namespace Lemmings
             #region Public Properties
 
             public Color Color { get; internal set; }
-            public Rectangle Rectangle { get; internal set; }
+            public Rectangle[] Rectangles { get; internal set; }
 
             #endregion Public Properties
         }

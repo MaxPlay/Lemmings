@@ -1,4 +1,5 @@
 ﻿using Lemmings.Animation;
+using Lemmings.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,13 +12,12 @@ namespace Lemmings
     /// <summary>
     /// The animatable and controllable goomba
     /// </summary>
-    public class Goomba : Sprite
+    public class Goomba : FrameSprite
     {
         #region Private Fields
 
         private Dictionary<GoombaState, SpriteAnimation> animations;
         private Vector2 position;
-        private bool running;
         private GoombaState state;
 
         #endregion Private Fields
@@ -100,8 +100,6 @@ namespace Lemmings
         public void Update(GameTime gameTime)
         {
             Vector2 speed = new Vector2();
-            //Gather user input
-            speed = Input(speed);
 
             position += speed;
 
@@ -117,27 +115,8 @@ namespace Lemmings
             }
 
             //update animations with running in mind
-            animations[state].Update(gameTime, running ? 2 : 1);
+            animations[state].Update(gameTime, 1);
             //Debug.Log("{0} {1}", state, animations[state].CurrentFrame); //Debug the frames
-        }
-
-        private Vector2 Input(Vector2 speed)
-        {
-            KeyboardState keyState = Keyboard.GetState();
-            if (keyState.IsKeyDown(Keys.Left))
-                speed.X -= scale;
-            if (keyState.IsKeyDown(Keys.Right))
-                speed.X += scale;
-            if (keyState.IsKeyDown(Keys.Up))
-                speed.Y -= scale;
-            if (keyState.IsKeyDown(Keys.Down))
-                speed.Y += scale;
-
-            running = keyState.IsKeyDown(Keys.LeftShift);
-            if (running)
-                speed *= 2;
-
-            return speed;
         }
 
         private void LoadAnimations()

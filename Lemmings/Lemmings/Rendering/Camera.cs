@@ -8,6 +8,7 @@ namespace Lemmings.Rendering
     {
         #region Private Fields
 
+        private static Camera mainCamera;
         private Color backgroundColor;
         private Rectangle bounds;
         private Vector2 position;
@@ -16,20 +17,6 @@ namespace Lemmings.Rendering
         private Viewport viewport;
         private Rectangle visbounds;
         private float zoom;
-
-        private static Camera mainCamera;
-
-        public static Camera Main
-        {
-            get
-            {
-                if (mainCamera == null) mainCamera = new Camera(); return mainCamera;
-            }
-            set
-            {
-                mainCamera = value;
-            }
-        }
 
         #endregion Private Fields
 
@@ -43,6 +30,18 @@ namespace Lemmings.Rendering
         #endregion Public Constructors
 
         #region Public Properties
+
+        public static Camera Main
+        {
+            get
+            {
+                if (mainCamera == null) mainCamera = new Camera(); return mainCamera;
+            }
+            set
+            {
+                mainCamera = value;
+            }
+        }
 
         /// <summary>
         /// The color that will be used as Clear-Color.
