@@ -21,7 +21,7 @@ namespace Lemmings.UI
 
         #region Private Fields
 
-        private IUIElement root;
+        protected IUIElement root;
 
         #endregion Private Fields
 

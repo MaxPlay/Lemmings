@@ -1,4 +1,5 @@
-﻿using Lemmings.Statemachine;
+﻿using Lemmings.Levels;
+using Lemmings.Statemachine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,12 +7,16 @@ namespace Lemmings.States
 {
     public class Gameplay : State
     {
+        Level level;
+        string levelName;
+
         #region Public Constructors
 
         public Gameplay(string name, StateMachine statemachine) : base(name, statemachine)
         {
+            
         }
-
+        
         #endregion Public Constructors
 
         #region Public Methods
@@ -22,6 +27,7 @@ namespace Lemmings.States
 
         public override void Initialize()
         {
+            level.Load(levelName);
         }
 
         public override void Unload()

@@ -1,4 +1,5 @@
-﻿using Lemmings.UI.Internal;
+﻿using System;
+using Lemmings.UI.Internal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,7 +8,7 @@ namespace Lemmings.Rendering
     /// <summary>
     /// A class representing a sprite that is split up in separate frames.
     /// </summary>
-    public class Sprite
+    public class Sprite : IRenderDelegatable
     {
         #region Protected Fields
 
@@ -89,6 +90,22 @@ namespace Lemmings.Rendering
             }
         }
 
+        public virtual DelegationType Delegation
+        {
+            get
+            {
+                return DelegationType.SamplerWrap;
+            }
+        }
+
+        public virtual bool DelegationPossible
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         #endregion Public Properties
 
         #region Public Methods
@@ -130,7 +147,7 @@ namespace Lemmings.Rendering
         /// <param name="spriteBatch">allows rendering the sprite to the screen</param>
         /// <param name="bounds">the rendered area</param>
         /// <param name="color">the color of the sprite</param>
-        public void Draw(SpriteBatch spriteBatch, Rectangle bounds, Color color)
+        public virtual void Draw(SpriteBatch spriteBatch, Rectangle bounds, Color color)
         {
             spriteBatch.Draw(Assetmanager.GetTexture(texture), bounds, null, color, rotation, origin, SpriteEffects.None, 0);
         }
@@ -179,6 +196,15 @@ namespace Lemmings.Rendering
                     origin = new Vector2(bounds.Width, bounds.Height);
                     break;
             }
+        }
+
+        public void Draw(SpriteBatch spriteBatch, IDelegateDrawSettings settings)
+        {
+            if (!(settings is SpriteDrawSettings))
+                return;
+
+            SpriteDrawSettings drawSettings = (SpriteDrawSettings)settings;
+            Draw(spriteBatch, drawSettings.Bounds, drawSettings.Color);
         }
 
         #endregion Public Methods

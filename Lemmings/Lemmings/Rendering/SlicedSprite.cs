@@ -61,14 +61,16 @@ namespace Lemmings.Rendering
 
         #endregion Public Properties
 
+        public override bool DelegationPossible
+        {
+            get
+            {
+                return true;
+            }
+        }
         #region Public Methods
 
-        public new void Draw(SpriteBatch spriteBatch, Rectangle bounds)
-        {
-            Draw(spriteBatch, bounds, Color.White);
-        }
-
-        public new void Draw(SpriteBatch spriteBatch, Rectangle bounds, Color color)
+        public override void Draw(SpriteBatch spriteBatch, Rectangle bounds, Color color)
         {
             int width = (bounds.Width < this.bounds.Width) ? this.bounds.Width : bounds.Width;
             int height = (bounds.Height < this.bounds.Height) ? this.bounds.Height : bounds.Height;

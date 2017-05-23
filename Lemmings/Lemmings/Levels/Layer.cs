@@ -41,7 +41,7 @@ namespace Lemmings.Levels
 
         #region Public Methods
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             //Add difference to tiles in the draw statement
             Vector2 difference = new Vector2(Camera.Main.Position.X / (bounds.Width + parallaxOffset.X), Camera.Main.Position.Y / (bounds.Height + parallaxOffset.Y)) * parallaxOffset;
@@ -49,6 +49,7 @@ namespace Lemmings.Levels
             {
                 for (int x = 0; x < tiles.Width; x++)
                 {
+                    
                 }
             }
         }

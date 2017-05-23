@@ -154,7 +154,13 @@ namespace Lemmings.UI.Internal
 
         protected virtual void DrawButton(SpriteBatch spriteBatch)
         {
-            sprite?.Draw(spriteBatch, bounds, hover ? backgroundHover : background);
+            if (sprite is SlicedSprite)
+            {
+                if (root is IRenderDelegator)
+                    ((IRenderDelegator)root).Delegate(sprite, new SpriteDrawSettings() { Color = hover ? backgroundHover : background, Bounds = bounds });
+            }
+            else
+                sprite?.Draw(spriteBatch, bounds, hover ? backgroundHover : background);
         }
 
         protected virtual void DrawText(SpriteBatch spriteBatch)
@@ -182,6 +188,8 @@ namespace Lemmings.UI.Internal
 
         protected virtual void MeasureString()
         {
+            if (text == null)
+                text = string.Empty;
             textDimension = Assetmanager.GetFont(font).MeasureString(text);
             textLocation = new Vector2(bounds.Center.X, bounds.Center.Y) - textDimension * 0.5f;
         }

@@ -1,4 +1,6 @@
-﻿using Lemmings.Levels;
+﻿using System;
+using Lemmings.Levels;
+using Lemmings.Localization;
 using Lemmings.Rendering;
 using Lemmings.Statemachine;
 using Lemmings.UI;
@@ -12,11 +14,9 @@ namespace Lemmings.States
     {
         #region Private Fields
 
-        private Button btnExit;
-        private Slider slider;
-        private SlicedSprite sprite;
-        private Tile t;
         private UIManager ui;
+        SlicedSprite buttonSprite;
+        Button btnQuit;
 
         #endregion Private Fields
 
@@ -24,35 +24,34 @@ namespace Lemmings.States
 
         public MainMenu(string name, StateMachine statemachine) : base(name, statemachine)
         {
-            Camera.Main.BackgroundColor = Color.Purple;
-            Sprite sliderSprite = new Sprite("Slider", "Textures/UI/Slider");
-            Sprite sliderHandleSprite = new Sprite("Handle", "Textures/UI/Handle");
-
             ui = new UIManager();
-            btnExit = new Button(ui, ui);
-            btnExit.Font = "Fonts/default";
-            btnExit.LocalizationKey = "language";
-            btnExit.Focus += (IInteractableUI i) => { Localization.Localizer.ChangeCulture("de-DE"); };
-            btnExit.Dimension = new Point(100, 200);
-            slider = new Slider(ui, ui);
-            slider.Position = new Vector2(300, 300);
-            slider.Sprite = sliderSprite;
-            slider.SetHandleSprite(sliderHandleSprite);
-            slider.RecalculateBounds();
+            Localizer.CultureChanged += Localizer_CultureChanged;
+            buttonSprite = new SlicedSprite("button_texture", "Textures/UI/Button");
+            buttonSprite.Top = 18;
+            buttonSprite.Left = 18;
+            buttonSprite.Right = 46;
+            buttonSprite.Bottom = 46;
 
-            int texture = Assetmanager.AquireTexture("test");
+            Assetmanager.AquireFont("Fonts/default");
+            btnQuit = new Button(ui, ui);
+            btnQuit.Sprite = buttonSprite;
+            btnQuit.Font = "Fonts/default";
+            btnQuit.Position = new Vector2(Game1.Graphics.PreferredBackBufferWidth - 200, 400);
+            btnQuit.Dimension = new Point(400, 100);
 
-            t = new Tile(new Point(0, 0), 32);
-            t.Texture = texture;
 
-            t.GenerateCollision();
-            Debug.Log(t.Collision.ToString2D());
 
-            sprite = new SlicedSprite("slice-test", "slice-test");
-            sprite.Top = 20;
-            sprite.Left = 20;
-            sprite.Right = 80;
-            sprite.Bottom = 80;
+            RefreshLocalization();
+        }
+
+        private void Localizer_CultureChanged(string culture)
+        {
+            RefreshLocalization();
+        }
+
+        private void RefreshLocalization()
+        {
+            btnQuit.Text = Localizer.GetString("quit");
         }
 
         #endregion Public Constructors
@@ -62,10 +61,6 @@ namespace Lemmings.States
         public override void Draw(SpriteBatch spriteBatch)
         {
             ui.Draw(spriteBatch);
-            for (int i = 0; i < t.Collision.Bounds.Length; i++)
-            {
-                Debug.DrawRectangle(t.Collision.Bounds[i], new Color(i / (float)t.Collision.Bounds.Length, 0.5f, 1 - i / (float)t.Collision.Bounds.Length));
-            }
         }
 
         public override void Initialize()

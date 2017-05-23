@@ -1,11 +1,13 @@
-﻿using Lemmings.UI.Internal;
+﻿using Lemmings.Rendering;
+using Lemmings.UI.Internal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System;
 
 namespace Lemmings.UI
 {
-    public class UIManager : IUIElement
+    public class UIManager : IUIElement, IRenderDelegator
     {
         #region Private Fields
 
@@ -18,6 +20,7 @@ namespace Lemmings.UI
         public UIManager()
         {
             children = new List<IUIElement>();
+            SetupDelegator();
         }
 
         #endregion Public Constructors
@@ -148,12 +151,53 @@ namespace Lemmings.UI
             children.Add(child);
         }
 
+        public void Delegate(IRenderDelegatable element, IDelegateDrawSettings settings)
+        {
+            if (element.DelegationPossible)
+                delegates[element.Delegation].Add(new RenderDelegation(element, settings));
+        }
+
+        private Dictionary<DelegationType, List<RenderDelegation>> delegates;
+
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
             foreach (IUIElement child in children)
             {
                 child.Draw(spriteBatch);
+            }
+            spriteBatch.End();
+            DrawDelegates(spriteBatch);
+        }
+
+        public void DrawDelegates(SpriteBatch spriteBatch)
+        {
+            if (delegates[DelegationType.SamplerWrap].Count > 0)
+            {
+                DelegateDraw(spriteBatch, DelegationType.SamplerWrap, BlendState.AlphaBlend, SamplerState.PointWrap, null, null);
+            }
+            if (delegates[DelegationType.Additive].Count > 0)
+            {
+                DelegateDraw(spriteBatch, DelegationType.Additive, BlendState.Additive, null, null, null);
+            }
+            if (delegates[DelegationType.NoRasterizer].Count > 0)
+            {
+                DelegateDraw(spriteBatch, DelegationType.NoRasterizer, BlendState.AlphaBlend, null, null, RasterizerState.CullNone);
+            }
+            if (delegates[DelegationType.StencilState].Count > 0)
+            {
+                DelegateDraw(spriteBatch, DelegationType.StencilState, BlendState.AlphaBlend, null, DepthStencilState.DepthRead, null);
+            }
+
+            ClearDelegator();
+        }
+
+        private void DelegateDraw(SpriteBatch spriteBatch, DelegationType delegation, BlendState blendState, SamplerState sampler, DepthStencilState depth, RasterizerState rasterizer)
+        {
+            spriteBatch.Begin(SpriteSortMode.Deferred, blendState, sampler, depth, rasterizer);
+            for (int i = 0; i < delegates[delegation].Count; i++)
+            {
+                delegates[delegation][i].Draw(spriteBatch);
             }
             spriteBatch.End();
         }
@@ -171,6 +215,25 @@ namespace Lemmings.UI
             foreach (IUIElement child in children)
             {
                 child.Update(gameTime);
+            }
+        }
+
+        public void SetupDelegator()
+        {
+            delegates = new Dictionary<DelegationType, List<RenderDelegation>>();
+            DelegationType[] t = Enum.GetValues(typeof(DelegationType)) as DelegationType[];
+            for (int i = 0; i < t.Length; i++)
+            {
+                delegates.Add(t[i], new List<RenderDelegation>());
+            }
+        }
+
+        public void ClearDelegator()
+        {
+            DelegationType[] t = Enum.GetValues(typeof(DelegationType)) as DelegationType[];
+            for (int i = 0; i < t.Length; i++)
+            {
+                delegates[t[i]].Clear();
             }
         }
 
