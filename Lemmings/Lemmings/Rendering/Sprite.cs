@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Lemmings.Rendering.Delegation;
 using Lemmings.UI.Internal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -50,6 +50,22 @@ namespace Lemmings.Rendering
             set { rotation = MathHelper.ToRadians(value); }
         }
 
+        public virtual DelegationType Delegation
+        {
+            get
+            {
+                return DelegationType.SamplerWrap;
+            }
+        }
+
+        public virtual bool DelegationPossible
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// The name of the Sprite.
         /// </summary>
@@ -87,22 +103,6 @@ namespace Lemmings.Rendering
             get
             {
                 return texture;
-            }
-        }
-
-        public virtual DelegationType Delegation
-        {
-            get
-            {
-                return DelegationType.SamplerWrap;
-            }
-        }
-
-        public virtual bool DelegationPossible
-        {
-            get
-            {
-                return false;
             }
         }
 
@@ -152,6 +152,15 @@ namespace Lemmings.Rendering
             spriteBatch.Draw(Assetmanager.GetTexture(texture), bounds, null, color, rotation, origin, SpriteEffects.None, 0);
         }
 
+        public void Draw(SpriteBatch spriteBatch, IDelegateDrawSettings settings)
+        {
+            if (!(settings is SpriteDrawSettings))
+                return;
+
+            SpriteDrawSettings drawSettings = (SpriteDrawSettings)settings;
+            Draw(spriteBatch, drawSettings.Bounds, drawSettings.Color);
+        }
+
         /// <summary>
         /// Sets the origin based on a handle
         /// </summary>
@@ -196,15 +205,6 @@ namespace Lemmings.Rendering
                     origin = new Vector2(bounds.Width, bounds.Height);
                     break;
             }
-        }
-
-        public void Draw(SpriteBatch spriteBatch, IDelegateDrawSettings settings)
-        {
-            if (!(settings is SpriteDrawSettings))
-                return;
-
-            SpriteDrawSettings drawSettings = (SpriteDrawSettings)settings;
-            Draw(spriteBatch, drawSettings.Bounds, drawSettings.Color);
         }
 
         #endregion Public Methods

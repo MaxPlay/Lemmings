@@ -1,19 +1,19 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Lemmings.Rendering
+namespace Lemmings.Rendering.Delegation
 {
-    interface IRenderDelegator
+    internal interface IRenderDelegator
     {
+        #region Public Methods
+
+        void ClearDelegator();
+
         void Delegate(IRenderDelegatable element, IDelegateDrawSettings settings);
 
         void DrawDelegates(SpriteBatch spriteBatch);
 
         void SetupDelegator();
 
-        void ClearDelegator();
+        #endregion Public Methods
     }
 }

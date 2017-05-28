@@ -1,4 +1,4 @@
-﻿namespace Lemmings.Rendering
+﻿namespace Lemmings.Rendering.Delegation
 {
     public enum DelegationType
     {

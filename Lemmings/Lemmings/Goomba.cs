@@ -68,8 +68,6 @@ namespace Lemmings
             get { return animations; }
         }
 
-        #endregion Public Properties
-
         /// <summary>
         /// The goombas position in world space
         /// </summary>
@@ -87,6 +85,10 @@ namespace Lemmings
             get { return state; }
             set { state = value; }
         }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         /// <summary>
         /// Renders the goomba at its location in worldspace with the current frame rendered
@@ -122,6 +124,10 @@ namespace Lemmings
             animations[state].Update(gameTime, 1);
             //Debug.Log("{0} {1}", state, animations[state].CurrentFrame); //Debug the frames
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         private void LoadAnimations()
         {
@@ -162,5 +168,7 @@ namespace Lemmings
                 animations.Add(state, animation); //add the animation to the hashmap
             }
         }
+
+        #endregion Private Methods
     }
 }

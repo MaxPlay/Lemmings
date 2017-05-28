@@ -1,6 +1,4 @@
-﻿using System;
-using Lemmings.Levels;
-using Lemmings.Localization;
+﻿using Lemmings.Localization;
 using Lemmings.Rendering;
 using Lemmings.Statemachine;
 using Lemmings.UI;
@@ -14,9 +12,9 @@ namespace Lemmings.States
     {
         #region Private Fields
 
+        private Button btnQuit;
+        private SlicedSprite buttonSprite;
         private UIManager ui;
-        SlicedSprite buttonSprite;
-        Button btnQuit;
 
         #endregion Private Fields
 
@@ -36,22 +34,11 @@ namespace Lemmings.States
             btnQuit = new Button(ui, ui);
             btnQuit.Sprite = buttonSprite;
             btnQuit.Font = "Fonts/default";
-            btnQuit.Position = new Vector2(Game1.Graphics.PreferredBackBufferWidth - 200, 400);
-            btnQuit.Dimension = new Point(400, 100);
-
-
+            btnQuit.Position = new Vector2(Game1.Graphics.PreferredBackBufferWidth / 2 - 100, 400);
+            btnQuit.Dimension = new Point(200, 100);
+            btnQuit.Click += BtnQuit_Click;
 
             RefreshLocalization();
-        }
-
-        private void Localizer_CultureChanged(string culture)
-        {
-            RefreshLocalization();
-        }
-
-        private void RefreshLocalization()
-        {
-            btnQuit.Text = Localizer.GetString("quit");
         }
 
         #endregion Public Constructors
@@ -77,5 +64,24 @@ namespace Lemmings.States
         }
 
         #endregion Public Methods
+
+        #region Private Methods
+
+        private void BtnQuit_Click(IInteractableUI element)
+        {
+            statemachine.ExitGame();
+        }
+
+        private void Localizer_CultureChanged(string culture)
+        {
+            RefreshLocalization();
+        }
+
+        private void RefreshLocalization()
+        {
+            btnQuit.Text = Localizer.GetString("quit");
+        }
+
+        #endregion Private Methods
     }
 }

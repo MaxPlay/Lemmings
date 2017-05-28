@@ -4,6 +4,27 @@ namespace Lemmings.Extensions
 {
     public static class ArrayExtension
     {
+        #region Public Methods
+
+        public static float Median(this float[,] data)
+        {
+            int width = data.GetLength(0);
+            int height = data.GetLength(1);
+            if (height == 0 || width == 0)
+                return 0;
+
+            float value = 0;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    value += data[x, y];
+                }
+            }
+
+            return value / (height * width);
+        }
+
         public static T[] SubArray<T>(this T[] data, int index, int length)
         {
             T[] result = new T[length];
@@ -28,23 +49,6 @@ namespace Lemmings.Extensions
             return result;
         }
 
-        public static float Median(this float[,] data)
-        {
-            int width = data.GetLength(0);
-            int height = data.GetLength(1);
-            if (height == 0 || width == 0)
-                return 0;
-
-            float value = 0;
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    value += data[x, y];
-                }
-            }
-
-            return value / (height * width);
-        }
+        #endregion Public Methods
     }
 }

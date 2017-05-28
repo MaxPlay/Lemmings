@@ -41,6 +41,14 @@ namespace Lemmings.Rendering
             set { bottom = value; UpdateSources(); }
         }
 
+        public override bool DelegationPossible
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public int Left
         {
             get { return left; }
@@ -61,13 +69,6 @@ namespace Lemmings.Rendering
 
         #endregion Public Properties
 
-        public override bool DelegationPossible
-        {
-            get
-            {
-                return true;
-            }
-        }
         #region Public Methods
 
         public override void Draw(SpriteBatch spriteBatch, Rectangle bounds, Color color)

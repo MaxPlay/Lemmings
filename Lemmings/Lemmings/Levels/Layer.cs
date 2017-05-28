@@ -49,7 +49,6 @@ namespace Lemmings.Levels
             {
                 for (int x = 0; x < tiles.Width; x++)
                 {
-                    
                 }
             }
         }

@@ -13,17 +13,12 @@ namespace Lemmings.UI
         protected bool enabled;
         protected IUIElement parent;
         protected Vector2 position;
+        protected IUIElement root;
         protected float rotation;
         protected Vector2 scale;
         protected bool visible;
 
         #endregion Protected Fields
-
-        #region Private Fields
-
-        protected IUIElement root;
-
-        #endregion Private Fields
 
         #region Public Constructors
 
@@ -106,6 +101,7 @@ namespace Lemmings.UI
             set
             {
                 scale = value;
+                ScaleUpdated();
             }
         }
 
@@ -151,6 +147,8 @@ namespace Lemmings.UI
                 if (parent != null)
                     position = value - parent.Position;
                 position = value;
+
+                PositionUpdated();
             }
         }
 
@@ -168,6 +166,8 @@ namespace Lemmings.UI
                 if (parent != null)
                     rotation = value - parent.Rotation;
                 rotation = value;
+
+                RotationUpdated();
             }
         }
 
@@ -221,5 +221,21 @@ namespace Lemmings.UI
         }
 
         #endregion Public Methods
+
+        #region Protected Methods
+
+        protected virtual void PositionUpdated()
+        {
+        }
+
+        protected virtual void RotationUpdated()
+        {
+        }
+
+        protected virtual void ScaleUpdated()
+        {
+        }
+
+        #endregion Protected Methods
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Lemmings.Localization;
 using Lemmings.Rendering;
+using Lemmings.Rendering.Delegation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -168,7 +169,13 @@ namespace Lemmings.UI.Internal
             if (Assetmanager.GetFont(font) == null)
                 return;
 
-            spriteBatch.DrawString(Assetmanager.GetFont(font), text, textLocation, hover ? foregroundHover : foreground);
+            if (sprite is SlicedSprite)
+            {
+                if (root is IRenderDelegator)
+                    ((IRenderDelegator)root).Delegate(new DelegatableFont() { FontName = font }, new FontSettings() { Color = hover ? foregroundHover : foreground, Position = textLocation, Text = text });
+            }
+            else
+                spriteBatch.DrawString(Assetmanager.GetFont(font), text, textLocation, hover ? foregroundHover : foreground);
         }
 
         protected virtual void Interaction()
@@ -207,6 +214,12 @@ namespace Lemmings.UI.Internal
         protected void OnLostFocus()
         {
             LostFocus?.Invoke(this);
+        }
+
+        protected override void PositionUpdated()
+        {
+            bounds.X = (int)Position.X;
+            bounds.Y = (int)Position.Y;
         }
 
         #endregion Protected Methods

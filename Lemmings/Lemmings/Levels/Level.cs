@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Lemmings.Levels
 {
@@ -9,12 +8,15 @@ namespace Lemmings.Levels
 
         private GameLayer game;
         private List<Layer> layers;
-        
-        public void Load(string levelName)
-        {
-
-        }
 
         #endregion Private Fields
+
+        #region Public Methods
+
+        public void Load(string levelName)
+        {
+        }
+
+        #endregion Public Methods
     }
 }

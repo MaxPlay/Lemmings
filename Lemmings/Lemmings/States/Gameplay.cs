@@ -7,16 +7,19 @@ namespace Lemmings.States
 {
     public class Gameplay : State
     {
-        Level level;
-        string levelName;
+        #region Private Fields
+
+        private Level level;
+        private string levelName;
+
+        #endregion Private Fields
 
         #region Public Constructors
 
         public Gameplay(string name, StateMachine statemachine) : base(name, statemachine)
         {
-            
         }
-        
+
         #endregion Public Constructors
 
         #region Public Methods

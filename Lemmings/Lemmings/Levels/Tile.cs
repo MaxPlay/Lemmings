@@ -9,15 +9,8 @@ namespace Lemmings.Levels
 
         private TileCollision collision;
 
-        private int texture;
-
         private Rectangle frame;
-
-        public Rectangle Frame
-        {
-            get { return frame; }
-            set { frame = value; }
-        }
+        private int texture;
 
         #endregion Private Fields
 
@@ -38,6 +31,12 @@ namespace Lemmings.Levels
         {
             get { return collision; }
             set { collision = value; }
+        }
+
+        public Rectangle Frame
+        {
+            get { return frame; }
+            set { frame = value; }
         }
 
         public int Texture

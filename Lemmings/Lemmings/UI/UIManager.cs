@@ -1,9 +1,9 @@
-﻿using Lemmings.Rendering;
+﻿using Lemmings.Rendering.Delegation;
 using Lemmings.UI.Internal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace Lemmings.UI
 {
@@ -12,6 +12,8 @@ namespace Lemmings.UI
         #region Private Fields
 
         private List<IUIElement> children;
+
+        private Dictionary<DelegationType, List<RenderDelegation>> delegates;
 
         #endregion Private Fields
 
@@ -151,13 +153,20 @@ namespace Lemmings.UI
             children.Add(child);
         }
 
+        public void ClearDelegator()
+        {
+            DelegationType[] t = Enum.GetValues(typeof(DelegationType)) as DelegationType[];
+            for (int i = 0; i < t.Length; i++)
+            {
+                delegates[t[i]].Clear();
+            }
+        }
+
         public void Delegate(IRenderDelegatable element, IDelegateDrawSettings settings)
         {
             if (element.DelegationPossible)
                 delegates[element.Delegation].Add(new RenderDelegation(element, settings));
         }
-
-        private Dictionary<DelegationType, List<RenderDelegation>> delegates;
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -192,30 +201,12 @@ namespace Lemmings.UI
             ClearDelegator();
         }
 
-        private void DelegateDraw(SpriteBatch spriteBatch, DelegationType delegation, BlendState blendState, SamplerState sampler, DepthStencilState depth, RasterizerState rasterizer)
-        {
-            spriteBatch.Begin(SpriteSortMode.Deferred, blendState, sampler, depth, rasterizer);
-            for (int i = 0; i < delegates[delegation].Count; i++)
-            {
-                delegates[delegation][i].Draw(spriteBatch);
-            }
-            spriteBatch.End();
-        }
-
         public void RemoveChild(IUIElement child)
         {
             if (children.Contains(child))
                 return;
 
             children.Add(child);
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            foreach (IUIElement child in children)
-            {
-                child.Update(gameTime);
-            }
         }
 
         public void SetupDelegator()
@@ -228,15 +219,28 @@ namespace Lemmings.UI
             }
         }
 
-        public void ClearDelegator()
+        public void Update(GameTime gameTime)
         {
-            DelegationType[] t = Enum.GetValues(typeof(DelegationType)) as DelegationType[];
-            for (int i = 0; i < t.Length; i++)
+            foreach (IUIElement child in children)
             {
-                delegates[t[i]].Clear();
+                child.Update(gameTime);
             }
         }
 
         #endregion Public Methods
+
+        #region Private Methods
+
+        private void DelegateDraw(SpriteBatch spriteBatch, DelegationType delegation, BlendState blendState, SamplerState sampler, DepthStencilState depth, RasterizerState rasterizer)
+        {
+            spriteBatch.Begin(SpriteSortMode.Deferred, blendState, sampler, depth, rasterizer);
+            for (int i = 0; i < delegates[delegation].Count; i++)
+            {
+                delegates[delegation][i].Draw(spriteBatch);
+            }
+            spriteBatch.End();
+        }
+
+        #endregion Private Methods
     }
 }

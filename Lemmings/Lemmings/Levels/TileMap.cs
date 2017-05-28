@@ -9,14 +9,9 @@ namespace Lemmings.Levels
 
         private int height;
 
-        private int width;
-
+        private Tile[] tiles;
         private Point tileSize;
-
-        public Point TileSize
-        {
-            get { return tileSize; }
-        }
+        private int width;
 
         #endregion Private Fields
 
@@ -27,6 +22,16 @@ namespace Lemmings.Levels
             get { return height; }
         }
 
+        public Tile[] Tiles
+        {
+            get { return tiles; }
+        }
+
+        public Point TileSize
+        {
+            get { return tileSize; }
+        }
+
         public int Width
         {
             get { return width; }
@@ -34,22 +39,16 @@ namespace Lemmings.Levels
 
         #endregion Public Properties
 
-        private Tile[] tiles;
-
-        public Tile[] Tiles
-        {
-            get { return tiles; }
-        }
-
-        public Tile GetTile(int x, int y)
-        {
-            return tiles[y * width + x];
-        }
+        #region Public Indexers
 
         public Tile this[int x, int y]
         {
             get { return GetTile(x, y); }
         }
+
+        #endregion Public Indexers
+
+        #region Public Methods
 
         public void Draw(SpriteBatch spriteBatch, Vector2 offset)
         {
@@ -74,5 +73,12 @@ namespace Lemmings.Levels
                 }
             }
         }
+
+        public Tile GetTile(int x, int y)
+        {
+            return tiles[y * width + x];
+        }
+
+        #endregion Public Methods
     }
 }
